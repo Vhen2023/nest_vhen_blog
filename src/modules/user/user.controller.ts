@@ -1,6 +1,14 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-21 17:39:47
+ * @LastEditTime: 2023-12-23 15:57:24
+ * @Description: 现在的努力是为了小时候吹过的牛逼！
+ * @FilePath: \nest-vhen-blog\src\modules\user\user.controller.ts
+ * 版权声明：未经授权，任何商业用途均须联系原作者【微信：zq2019-8888】
+ */
+/*
+ * @Author: vhen
+ * @Date: 2023-12-21 17:39:47
  * @LastEditTime: 2023-12-22 22:23:16
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\modules\user\user.controller.ts
@@ -33,7 +41,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
+  @Get("getUserList")
   // @Version('1')
   @ApiOperation({summary:"获取用户列表",description:"获取用户列表接口"})
   // @ApiQuery({name:"username",description:"用户名称"})

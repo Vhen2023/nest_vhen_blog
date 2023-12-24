@@ -9,7 +9,13 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    return [{
+      username: 'vhen',
+      age: 18
+    }, {
+      username: '小星',
+      age: 28
+    }];
   }
 
   findOne(id: number) {
@@ -22,5 +28,14 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+  /** 校验 token */
+  verifyToken(token: string): string {
+    try {
+      if (!token) return null
+      // 
+    } catch (error) {
+      return null
+    }
   }
 }
