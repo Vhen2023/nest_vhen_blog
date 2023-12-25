@@ -1,10 +1,10 @@
 import * as Path from 'path';
 import * as Log4js from 'log4js';
 import * as Util from 'util';
-import * as Moment from 'dayjs'; // 处理时间的工具
+import * as DayJs from 'dayjs'; // 处理时间的工具
 import * as StackTrace from 'stacktrace-js';
 import Chalk from 'chalk';
-import config from '../../../.config/log4js';
+import config from '../../../../.config/log4js';
 
 //日志级别
 export enum LoggerLevel {
@@ -53,7 +53,7 @@ Log4js.addLayout('Awesome-nest', (logConfig: any) => {
         const messageOutput: string = messageList.join(' ');
         const positionOutput: string = position ? `[${position}]` : '';
         const typeOutput = `[${logConfig.type}]${logEvent.pid.toString()} - `;
-        const dateOutput = `${Moment(logEvent.startTime).format(
+        const dateOutput = `${DayJs(logEvent.startTime).format(
             'YYYY-MM-DD HH:mm:ss',
         )}`;
         const moduleOutput: string = moduleName
