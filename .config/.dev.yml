@@ -3,15 +3,21 @@ APP:
   prefix: '/api'
   host: 'localhost'
   port: 3000
- 
- # 数据库
-MYSQL:
-  type: mysql # 数据库链接类型
-  host: localhost
-  port: 3306
-  username: "root" # 数据库链接用户名
-  password: "root" # 数据库链接密码
-  database: "nest_vhen_blog" # 数据库名
-  logging: true # 数据库打印日志
-  synchronize: true # 是否开启同步数据表功能
-  autoLoadEntities: true # 是否自动加载实体
+# 日志
+LOG:
+  level: 'info'
+  on: true
+  dir: 'logs'
+  timestamp: true
+  # 数据库
+DB:
+  mysql:
+    type: mysql # 数据库链接类型
+    host: localhost
+    port: 3306
+    username: 'root' # 数据库链接用户名
+    password: 'root' # 数据库链接密码
+    database: 'nest_vhen_blog' # 数据库名
+    logging: true # 数据库打印日志
+    synchronize: true # 是否开启同步数据表功能
+    autoLoadEntities: true # 是否自动加载实体

@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-23 15:03:14
- * @LastEditTime: 2023-12-24 17:00:32
+ * @LastEditTime: 2023-12-29 18:28:55
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\doc.ts
  *swagger接口文档
@@ -12,7 +12,12 @@ import * as packageConfig from '../package.json'
 const ENV = process.env.NODE_ENV;
 export const GenerateSwaggerDoc = (app) => {
     if (ENV !== 'prod') {
-        const options = new DocumentBuilder().setTitle('nest-vhen-blog博客接口文档').setDescription(packageConfig.description).setVersion(packageConfig.version).build()
+        const options = new DocumentBuilder()
+            .setTitle('nest-vhen-blog博客接口文档')
+            .setDescription(packageConfig.description)
+            .setVersion(packageConfig.version)
+            .addBearerAuth()
+            .build()
         const document = SwaggerModule.createDocument(app, options)
         SwaggerModule.setup('/api-docs', app, document)
         knife4jSetup(app, {

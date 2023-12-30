@@ -3,7 +3,7 @@ import { DemoPipe } from '@/common/pipe/demo.pipe';
 /*
  * @Author: vhen
  * @Date: 2023-12-23 19:22:25
- * @LastEditTime: 2023-12-25 00:03:59
+ * @LastEditTime: 2023-12-30 14:27:09
  * @Description: 现在的努力是为了小时候吹过的牛逼！@
  * @FilePath: \nest-vhen-blog\src\modules\demo\demo.controller.ts
  * 
@@ -24,7 +24,7 @@ export class DemoController {
   @SwaggerDoc("创建demo", "demo描述", "创建demo请求", String)
   @AllowAnon()
   @Transactional()
-  create(@Body(new DemoPipe()) createDemoDto: CreateDemoDto) {
+  create(@Body() createDemoDto: CreateDemoDto) {
     return this.demoService.create(createDemoDto);
   }
 

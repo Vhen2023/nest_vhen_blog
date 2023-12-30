@@ -1,42 +1,36 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-21 17:39:47
- * @LastEditTime: 2023-12-25 17:50:38
+ * @LastEditTime: 2023-12-30 15:06:22
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\modules\user\user.controller.ts
- * 版权声明：未经授权，任何商业用途均须联系原作者【微信：zq2019-8888】
  */
-/*
- * @Author: vhen
- * @Date: 2023-12-21 17:39:47
- * @LastEditTime: 2023-12-22 22:23:16
- * @Description: 现在的努力是为了小时候吹过的牛逼！
- * @FilePath: \nest-vhen-blog\src\modules\user\user.controller.ts
- * 版权声明：未经授权，任何商业用途均须联系原作者【微信：zq2019-8888】
- */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiParam, ApiQuery, ApiBody, ApiResponse, ApiHeader } from "@nestjs/swagger"
+import { Controller, Inject, Get, Post, Body, Query, Patch, Param, Delete, HttpCode, HttpStatus, LoggerService } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiParam, ApiBearerAuth, ApiBody, ApiResponse, ApiHeader } from "@nestjs/swagger"
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AllowAnon } from '@/common/decorator/allow-anon.decorator'
+import { User as UserEntity } from './entities/user.entity';
 
 @Controller({
   path: "user",
   version: '1'
 })
 @ApiTags("用户管理")
-// username: string
-// @Controller('user')
+@ApiBearerAuth()
 @ApiHeader({
   name: 'authoriation',
   required: true,
   description: '本次请求请带上token',
 })
+@AllowAnon()
 export class UserController {
-  constructor(private readonly userService: UserService) { }
-
+  constructor(private readonly userService: UserService, @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService) { }
+  @ApiResponse({ status: 201, description: '创建用户', type: UserEntity })
   @Post()
-  @ApiOperation({ summary: "创建用户", description: "创建用户接口" })
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -44,10 +38,12 @@ export class UserController {
   @Get("getUserList")
   // @Version('1')
   @ApiOperation({ summary: "获取用户列表", description: "获取用户列表接口" })
-  // @ApiQuery({name:"username",description:"用户名称"})
-  @ApiResponse({ status: 401, description: "自定义返回信息", type: CreateUserDto })
-  findAll() {
-    return this.userService.findAll();
+  @ApiParam({ name: "page", description: "分页", required: true })
+  @ApiParam({ name: "pageSize", description: "页码", required: true })
+  @ApiParam({ name: "keyWord", description: "关键词", required: true })
+  findAll(@Query() query: { keyWord: string, page: number, pageSize: number }) {
+    this.logger.error('用户控制器初始化...');
+    return this.userService.findAll(query);
   }
 
   @Get(':id')
@@ -56,12 +52,13 @@ export class UserController {
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
-
+  @ApiOperation({ summary: "更新用户", description: "更新用户" })
+  @ApiResponse({ status: 200, description: '更新用户', type: UserEntity })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
-
+  @ApiOperation({ summary: "删除用户", description: "根据id删除用户" })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);

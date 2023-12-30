@@ -1,28 +1,26 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-20 19:28:09
- * @LastEditTime: 2023-12-25 21:44:09
+ * @LastEditTime: 2023-12-30 15:57:47
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\app.module.ts
  * 
  */
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module, ValidationPipe, Logger } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_FILTER, APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { DataSource } from 'typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { DemoModule } from './modules/demo/demo.module';
 import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
-import { HttpExceptionFilter } from '@/common/filters/exceptions/http.exception.filter';
+import { HttpExceptionFilter } from '@/common/filters/exceptions/http-exception.filter';
 import { JwtAuthGuard } from '@/common/guard/auth.guard'
-import { DemoPipe } from '@/common/pipe/demo.pipe';
 import { getYmlConfig } from '@/utils/ymlConfig';
-
+import { LoggerModule } from '@/common/libs/logger/logger.module';
+// @Global()
 @Module({
   imports: [
     // 配置模块
@@ -42,7 +40,7 @@ import { getYmlConfig } from '@/utils/ymlConfig';
           // entities: [`${__dirname}/**/*.entity{.ts,.js}`],
           autoLoadEntities: true,
           keepConnectionAlive: true,
-          ...config.get('MYSQL'),
+          ...config.get('DB').mysql,
           namingStrategy: new SnakeNamingStrategy(),
           // cache: {
           //   type: 'ioredis',
@@ -59,28 +57,27 @@ import { getYmlConfig } from '@/utils/ymlConfig';
         return addTransactionalDataSource(new DataSource(options));
       }
     }),
-    UserModule, DemoModule,],
-  controllers: [AppController],
-  providers: [AppService, {
+    UserModule, LoggerModule, DemoModule,],
+  controllers: [],
+  providers: [{
     // 全局验证管道
     provide: APP_PIPE,
     useClass: ValidationPipe,
   },
-    { provide: APP_PIPE, useClass: DemoPipe },
-    {
-      // 全局权限认证
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      // 全局拦截器
-      provide: APP_INTERCEPTOR,
-      useClass: TransformInterceptor,
-    }, {
-      // Http异常
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },],
-
+  {
+    // 全局权限认证
+    provide: APP_GUARD,
+    useClass: JwtAuthGuard,
+  },
+  {
+    // 全局拦截器
+    provide: APP_INTERCEPTOR,
+    useClass: TransformInterceptor,
+  }, {
+    // Http异常
+    provide: APP_FILTER,
+    useClass: HttpExceptionFilter,
+  }, Logger],
+  exports: [Logger],
 })
 export class AppModule { }
