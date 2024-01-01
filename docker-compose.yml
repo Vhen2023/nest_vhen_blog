@@ -1,0 +1,5 @@
+redis-publisher:
+  image: redis
+  restart: always
+  depends_on:
+    - dapr-placement

@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-29 20:02:41
- * @LastEditTime: 2023-12-30 15:51:35
+ * @LastEditTime: 2023-12-30 17:24:43
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\common\libs\logger\logger.module.ts
  * 
@@ -36,19 +36,19 @@ function createDailyRotateTrasnport(level: string, filename: string, dir: string
         WinstonModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => {
-                const timestamp = configService.get('LOG').timestamp === 'true';
+                const timestamp = configService.get('log').timestamp === 'true';
                 const conbine = [];
                 if (timestamp) {
                     conbine.push(winston.format.timestamp());
                 }
                 conbine.push(nestWinstonModuleUtilities.format.nestLike());
                 const consoleTransports = new Console({
-                    level: configService.get('LOG').level || 'info',
+                    level: configService.get('log').level || 'info',
                     format: winston.format.combine(...conbine),
                 });
-                const writeTransport = configService.get('LOG').on ? [
-                    createDailyRotateTrasnport('info', 'application', configService.get('LOG').dir),
-                    createDailyRotateTrasnport('warn', 'error', configService.get('LOG').dir),
+                const writeTransport = configService.get('log').on ? [
+                    createDailyRotateTrasnport('info', 'application', configService.get('log').dir),
+                    createDailyRotateTrasnport('warn', 'error', configService.get('log').dir),
                 ]
                     : []
                 return {

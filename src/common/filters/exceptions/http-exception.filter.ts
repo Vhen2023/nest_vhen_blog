@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-24 16:05:52
- * @LastEditTime: 2023-12-30 15:05:34
+ * @LastEditTime: 2023-12-31 19:16:54
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\common\filters\exceptions\http-exception.filter.ts
  * 
@@ -29,7 +29,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         response.status(HttpStatus.NOT_FOUND).json({
             statusCode: HttpStatus.NOT_FOUND,
             timestamp: new Date().getTime(),
-            path: request.url,
+            path: request.url,  // 错误的url地址
+            method: request.method,  // 请求方式
             message: exception.getResponse() || exception.message || exception.name,
         });
     }

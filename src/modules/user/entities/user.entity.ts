@@ -1,4 +1,13 @@
+/*
+ * @Author: vhen
+ * @Date: 2023-12-21 17:39:47
+ * @LastEditTime: 2024-01-01 12:12:51
+ * @Description: 现在的努力是为了小时候吹过的牛逼！
+ * @FilePath: \nest-vhen-blog\src\modules\user\entities\user.entity.ts
+ * 
+ */
 import { ApiProperty } from '@nestjs/swagger'
+import { Exclude } from 'class-transformer';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 @Entity({ name: "sys_user" })
 export class User {
@@ -21,6 +30,7 @@ export class User {
     @Column({ length: 11, comment: '手机号' })
     phone: string;
     @ApiProperty({ description: '用户密码' })
+    @Exclude({ toPlainOnly: true }) // 输出屏蔽密码
     @Column({ comment: "用户密码" })
     password: string;
     @ApiProperty({ description: '状态', })

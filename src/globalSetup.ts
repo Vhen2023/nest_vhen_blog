@@ -14,7 +14,7 @@ import { json, urlencoded } from 'express'
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 export const GlobalSetup = (app: INestApplication, config: any) => {
-    const flag: boolean = config.get('LOG').on;
+    const flag: boolean = config.get('log').on;
     flag && app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
     // 接口版本化管理
     app.enableVersioning({
@@ -25,7 +25,7 @@ export const GlobalSetup = (app: INestApplication, config: any) => {
         credentials: true,
         maxAge: 1728000,
     })
-    app.setGlobalPrefix(config.get('APP').prefix)
+    app.setGlobalPrefix(config.get('app').prefix)
     app.useGlobalPipes(new ValidationPipe({
         transform: true,
         whitelist: true,// 去除在类上不存在的字段

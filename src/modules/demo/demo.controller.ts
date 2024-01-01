@@ -3,7 +3,7 @@ import { DemoPipe } from '@/common/pipe/demo.pipe';
 /*
  * @Author: vhen
  * @Date: 2023-12-23 19:22:25
- * @LastEditTime: 2023-12-30 14:27:09
+ * @LastEditTime: 2023-12-31 21:46:38
  * @Description: 现在的努力是为了小时候吹过的牛逼！@
  * @FilePath: \nest-vhen-blog\src\modules\demo\demo.controller.ts
  * 
@@ -12,7 +12,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DemoService } from './demo.service';
 import { CreateDemoDto } from './dto/create-demo.dto';
 import { UpdateDemoDto } from './dto/update-demo.dto';
-import { SwaggerDoc } from '@/common/decorator/swagger.decorator'
+import { SwaggerApi } from '@/common/decorator/swagger.decorator';
 import { AllowAnon } from '@/common/decorator/allow-anon.decorator'
 import { Transactional } from 'typeorm-transactional';
 
@@ -21,7 +21,7 @@ export class DemoController {
   constructor(private readonly demoService: DemoService) { }
 
   @Post()
-  @SwaggerDoc("创建demo", "demo描述", "创建demo请求", String)
+  @SwaggerApi()
   @AllowAnon()
   @Transactional()
   create(@Body() createDemoDto: CreateDemoDto) {

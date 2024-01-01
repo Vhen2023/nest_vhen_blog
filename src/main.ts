@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-20 19:28:09
- * @LastEditTime: 2023-12-30 15:59:34
+ * @LastEditTime: 2023-12-31 14:52:15
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\main.ts
  * 
@@ -19,7 +19,7 @@ async function bootstrap() {
   initializeTransactionalContext();
   const app = await NestFactory.create(AppModule, {
     // 开启全局日志
-    logger: false,
+    // logger: false,
     // logger: ['error', 'warn'],
   });
   const config = app.get(ConfigService)
@@ -27,7 +27,7 @@ async function bootstrap() {
   GlobalSetup(app, config)
   // 创建文档
   GenerateSwaggerDoc(app)
-  await app.listen(config.get('APP').port);
+  await app.listen(config.get('app').port);
   await app.init();
   // 热更新
   if (module.hot) {
