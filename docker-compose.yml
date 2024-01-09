@@ -1,5 +1,57 @@
-redis-publisher:
-  image: redis
-  restart: always
-  depends_on:
-    - dapr-placement
+version: '3.8'
+services:
+  blog:
+    container_name: blog-server
+    image: blog:latest
+    build: .
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 9000:9000
+    # restart: always
+    volumes:
+      - ./src:/app/src
+      - ./.config:/blog/.config
+    depends_on:  # web服务依靠mysql要先等mysql启动
+      - db
+      # - my-redis
+    links:
+      - db:mysql
+    # 不声明的话，也会在同一个网络中，名称默认是 项目_default， 比如我这个项目叫 nest_vhen_blog, 默认的网络名称就是 nest_vhen_blog_default
+    networks: 
+      - blog-network
+  db:
+    container_name: db-server
+    image: mysql:8
+    restart: on-failure
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: blog
+      MYSQL_USER: vhen
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3307:3306
+    privileged: true  #设置为true，不然数据卷可能挂载不了，启动不起
+    volumes:
+      # 数据logs
+      # - /usr/local/mysql/log:/var/log/mysql
+      - ./db/mysql-files:/var/lib/mysql-files
+      - ./db/logs:/var/log/mysql # 映射日志目录，将容器/var/log/mysql目录下的数据，备份到主机的 /db/log目录下
+      # 数据数据
+      - ./db/data:/var/lib/mysql # 映射数据目录，将容器/var/lib/mysql目录下的数据，备份到主机的 /db/data目录下
+      - ./db/conf:/etc/mysql # 映射配置目录，将容器/etc/mysql目录下的数据，备份到主机的 db/conf目录下
+      - ./db/init:/docker-entrypoint-initdb.d/ # 存放初始化的脚本
+    networks:
+      - blog-network
+    # 解决外部无法访问
+    command: 
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+networks:
+  blog-network:
+    driver: bridge

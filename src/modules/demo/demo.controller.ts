@@ -3,7 +3,7 @@ import { DemoPipe } from '@/common/pipe/demo.pipe';
 /*
  * @Author: vhen
  * @Date: 2023-12-23 19:22:25
- * @LastEditTime: 2023-12-31 21:46:38
+ * @LastEditTime: 2024-01-02 18:40:21
  * @Description: 现在的努力是为了小时候吹过的牛逼！@
  * @FilePath: \nest-vhen-blog\src\modules\demo\demo.controller.ts
  * 
@@ -15,21 +15,23 @@ import { UpdateDemoDto } from './dto/update-demo.dto';
 import { SwaggerApi } from '@/common/decorator/swagger.decorator';
 import { AllowAnon } from '@/common/decorator/allow-anon.decorator'
 import { Transactional } from 'typeorm-transactional';
-
 @Controller('demo')
+@AllowAnon()
 export class DemoController {
   constructor(private readonly demoService: DemoService) { }
 
   @Post()
   @SwaggerApi()
-  @AllowAnon()
+
   @Transactional()
   create(@Body() createDemoDto: CreateDemoDto) {
     return this.demoService.create(createDemoDto);
   }
 
   @Get()
+
   findAll() {
+    // this.demoService.setValue('test', '8787878')
     return this.demoService.findAll();
   }
 

@@ -11,7 +11,7 @@ db:
     port: 3306
     username: 'root' # 数据库链接用户名
     password: 'root' # 数据库链接密码
-    database: 'nest_vhen_blog' # 数据库名
+    database: 'blog' # 数据库名
     logging: true # 数据库打印日志
     synchronize: true # 是否开启同步数据表功能
     autoLoadEntities: true # 是否自动加载实体
@@ -26,6 +26,14 @@ jwt:
   secret: 'm5Hg7GuoJYO6uiXILqnXyqKQ1joRQ6YhoPBb6CUfV6p6qi1BBK2rt98RxRAs8Oi7i'
   expires: '1d'
   refresh: '7d'
+# redis 配置
+redis:
+  host: 'localhost'
+  port: 6379
+  password: '123456'
+  db: 0
+  keyPrefix: 'nest:'
+
 #  用户相关
 # 初始密码， 重置密码
 user:

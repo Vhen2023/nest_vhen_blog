@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-24 13:28:58
- * @LastEditTime: 2024-01-01 12:48:03
+ * @LastEditTime: 2024-01-02 18:40:53
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\common\interceptor\transform.interceptor.ts
  * 
@@ -27,7 +27,6 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
             .getResponse<FastifyReply>();
         return next.handle().pipe(
             map((originalData: any) => {
-                console.log('originalData', originalData);
                 if (!originalData || !originalData?.data) {
                     // originalData.timestamp = getCurrentTimestamp()
                     return originalData

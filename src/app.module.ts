@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-20 19:28:09
- * @LastEditTime: 2023-12-31 13:50:12
+ * @LastEditTime: 2024-01-06 22:10:57
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\app.module.ts
  * 
@@ -21,6 +21,7 @@ import { JwtAuthGuard } from '@/common/guard/auth.guard'
 import { getYmlConfig } from '@/utils/ymlConfig';
 import { LoggerModule } from '@/common/libs/logger/logger.module';
 import { AuthModule } from './modules/auth/auth.module';
+// import { RedisModule } from '@/common/libs/redis/redis.module';
 // @Global()
 @Module({
   imports: [
@@ -39,8 +40,6 @@ import { AuthModule } from './modules/auth/auth.module';
           type: 'mysql',
           // 可能不再支持这种方式，entities 将改成接收 实体类的引用
           // entities: [`${__dirname}/**/*.entity{.ts,.js}`],
-          autoLoadEntities: true,
-          keepConnectionAlive: true,
           ...config.get('db').mysql,
           namingStrategy: new SnakeNamingStrategy(),
           // cache: {
@@ -58,7 +57,7 @@ import { AuthModule } from './modules/auth/auth.module';
         return addTransactionalDataSource(new DataSource(options));
       }
     }),
-    UserModule, LoggerModule, DemoModule, AuthModule,],
+    UserModule, LoggerModule, DemoModule, AuthModule],
   controllers: [],
   providers: [{
     // 全局验证管道
