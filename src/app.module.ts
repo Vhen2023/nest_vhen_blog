@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-20 19:28:09
- * @LastEditTime: 2024-01-06 22:10:57
+ * @LastEditTime: 2024-01-12 02:10:09
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\app.module.ts
  * 
@@ -13,15 +13,21 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { DataSource } from 'typeorm';
-import { UserModule } from './modules/user/user.module';
-import { DemoModule } from './modules/demo/demo.module';
+
 import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
 import { HttpExceptionFilter } from '@/common/filters/exceptions/http-exception.filter';
+
 import { JwtAuthGuard } from '@/common/guard/auth.guard'
 import { getYmlConfig } from '@/utils/ymlConfig';
+
+// import { RedisModule } from '@/common/libs/redis/redis.module';
+//系统模块
 import { LoggerModule } from '@/common/libs/logger/logger.module';
 import { AuthModule } from './modules/auth/auth.module';
-// import { RedisModule } from '@/common/libs/redis/redis.module';
+import { UserModule } from './modules/user/user.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { RoleModule } from './modules/role/role.module';
+import { DeptModule } from './modules/dept/dept.module';
 // @Global()
 @Module({
   imports: [
@@ -56,8 +62,7 @@ import { AuthModule } from './modules/auth/auth.module';
         }
         return addTransactionalDataSource(new DataSource(options));
       }
-    }),
-    UserModule, LoggerModule, DemoModule, AuthModule],
+    }), LoggerModule, AuthModule, UserModule, MenuModule, RoleModule, DeptModule],
   controllers: [],
   providers: [{
     // 全局验证管道

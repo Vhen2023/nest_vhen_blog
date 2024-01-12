@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-29 20:02:41
- * @LastEditTime: 2023-12-30 17:24:43
+ * @LastEditTime: 2024-01-10 15:17:34
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\common\libs\logger\logger.module.ts
  * 
@@ -15,7 +15,6 @@ import { ConfigService } from '@nestjs/config';
 import { LoggerService } from './logger.service';
 import { join } from 'path';
 function createDailyRotateTrasnport(level: string, filename: string, dir: string) {
-    console.log('ss', join(process.cwd(), dir));
     return new DailyRotateFile({
         level, // 日志等级，不设置所有日志将在同一个文件
         dirname: join(process.cwd(), dir),  // 日志文件文件夹

@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-30 17:14:40
- * @LastEditTime: 2024-01-01 12:56:09
+ * @LastEditTime: 2024-01-11 03:02:49
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\modules\auth\auth.service.ts
  * 
@@ -10,10 +10,13 @@ import { Injectable, Inject, ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from "bcryptjs"
+
+import { SigninUserDto } from './dto/signin-user.dto';
 import { User as UserEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import { SigninUserDto } from './dto/signin-user.dto';
+
 import { ApiResult } from '@/utils/apiResult';
+import { CodeEnum } from '@/common/enum/error-code';
 @Injectable()
 export class AuthService {
     constructor(@Inject(UserService) private readonly userService: UserService,
@@ -27,18 +30,17 @@ export class AuthService {
     async signin(signinUser: SigninUserDto): Promise<ApiResult> {
         const user = await this.userService.findOneByUserName(signinUser.username);
         if (!user) {
-            return ApiResult.fail(20001, '用户不存在，请注册')
+            return ApiResult.fail(CodeEnum.ACCOUNT_NOT_EXIST.code, CodeEnum.ACCOUNT_NOT_EXIST.msg)
         }
         // 用户密码进行比对
         const checkPassword = await compareSync(signinUser.password, user.password)
         if (!checkPassword) {
-            return ApiResult.fail(20002, '用户名或者密码错误')
+            return ApiResult.fail(CodeEnum.ACCOUNT_PASSWORD_ERROR.code, CodeEnum.ACCOUNT_PASSWORD_ERROR.msg)
         }
         if (!user.status) {
-            // throw new ForbiddenException('用户未激活，请先激活');
-            return ApiResult.fail(20003, '用户未激活，请先激活')
+            return ApiResult.fail(CodeEnum.ACCOUNT_DISABLED.code, CodeEnum.ACCOUNT_DISABLED.msg)
         }
-        let data = await this.getToken({ username: user.password, userId: user.userId })
+        let data = await this.getToken({ username: user.password, businessId: user.businessId })
         return ApiResult.success(data);
     }
     /**
@@ -56,18 +58,18 @@ export class AuthService {
      * @returns 
      */
     async getToken(payload: {
-        userId: string,
+        businessId: string,
         username: string
     }) {
         const access_token = `Bearer ${await this.jwtService.signAsync({
             username: payload.username,
-            sub: payload.userId,
+            sub: payload.businessId,
         }, {
             expiresIn: this.configService.get('jwt.expires')
         })}`
         const refresh_token = await this.jwtService.signAsync({
             username: payload.username,
-            sub: payload.userId,
+            sub: payload.businessId,
         }, {
             expiresIn: this.configService.get('jwt.refresh')
         })

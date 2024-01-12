@@ -12,6 +12,7 @@ db:
     username: 'root' # 数据库链接用户名
     password: 'root' # 数据库链接密码
     database: 'blog' # 数据库名
+    entityPrefix: 'sys_' # 表名前缀
     logging: true # 数据库打印日志
     synchronize: true # 是否开启同步数据表功能
     autoLoadEntities: true # 是否自动加载实体

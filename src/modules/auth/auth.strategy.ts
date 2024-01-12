@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-31 03:28:15
- * @LastEditTime: 2024-01-01 13:06:35
+ * @LastEditTime: 2024-01-11 03:03:11
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\modules\auth\auth.strategy.ts
  * 
@@ -11,6 +11,7 @@ import { ConfigService } from '@nestjs/config'
 import { UnauthorizedException, Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
+
 import { AuthService } from './auth.service'
 
 @Injectable()

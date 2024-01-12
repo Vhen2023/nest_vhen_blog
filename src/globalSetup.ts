@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-23 19:10:48
- * @LastEditTime: 2023-12-30 15:54:11
+ * @LastEditTime: 2024-01-10 15:41:31
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\globalSetup.ts
  * 全局注册文件
@@ -9,6 +9,7 @@
 import { ValidationPipe, VersioningType, INestApplication } from '@nestjs/common'
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit'
+// import * as session from 'express-session';
 import * as cors from 'cors'
 import { json, urlencoded } from 'express'
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -43,7 +44,14 @@ export const GlobalSetup = (app: INestApplication, config: any) => {
     // 注意： 开发环境如果开启 nest static module 需要将 crossOriginResourcePolicy 设置为 false 否则 静态资源 跨域不可访问
     // { crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' }, crossOriginResourcePolicy: false }
     app.use(helmet({ crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' }, crossOriginResourcePolicy: false }))
-
+    // 使用session
+    // app.use(
+    //     session({
+    //         secret: 'sishi',
+    //         resave: false,
+    //         saveUninitialized: false,
+    //     }),
+    // );
     // 文件上传大小限制
     app.use(json({ limit: '5mb' }))
     app.use(urlencoded({ extended: true, limit: '5mb' }))

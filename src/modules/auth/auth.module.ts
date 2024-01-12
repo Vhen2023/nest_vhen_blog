@@ -1,7 +1,7 @@
 /*
  * @Author: vhen
  * @Date: 2023-12-30 17:14:21
- * @LastEditTime: 2023-12-31 15:18:41
+ * @LastEditTime: 2024-01-11 03:02:15
  * @Description: 现在的努力是为了小时候吹过的牛逼！
  * @FilePath: \nest-vhen-blog\src\modules\auth\auth.module.ts
  * 
@@ -10,6 +10,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt';
+
 import { AuthService } from './auth.service';
 import { AuthStrategy } from './auth.strategy';
 import { UserModule } from '../user/user.module';
